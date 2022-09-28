@@ -2,6 +2,18 @@ defmodule Tool do
   # fixme: check file permissions
   # fixme: run cmd with pty
 
+  def chmod(perms, path, opts \\ []) do
+    chmod = System.find_executable("chmod")
+    opts = Keyword.put(opts, :args, [perms, path])
+    cmd(chmod, opts)
+  end
+
+  def killall(name, opts \\ []) do
+    killall = System.find_executable("killall")
+    opts = Keyword.put(opts, :args, ["-9", name])
+    cmd(killall, opts)
+  end
+
   def ls(path, opts \\ []) do
     ls = System.find_executable("ls")
     opts = Keyword.put(opts, :args, [path])
