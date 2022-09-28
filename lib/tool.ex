@@ -6,39 +6,45 @@ defmodule Tool do
   # fixme: add chmod to nerves
   # fixme: executables under /tmp give :eaccess error
   def chmod(perms, path, opts \\ []) do
-    chmod = System.find_executable("chmod")
+    exec = System.find_executable("chmod")
+    if exec == nil, do: raise("#{exec} not found")
     opts = Keyword.put(opts, :args, [perms, path])
-    cmd(chmod, opts)
+    cmd(exec, opts)
   end
 
   def killall(name, opts \\ []) do
-    killall = System.find_executable("killall")
+    exec = System.find_executable("killall")
+    if exec == nil, do: raise("#{exec} not found")
     opts = Keyword.put(opts, :args, ["-9", name])
-    cmd(killall, opts)
+    cmd(exec, opts)
   end
 
   def ls(path, opts \\ []) do
-    ls = System.find_executable("ls")
+    exec = System.find_executable("ls")
+    if exec == nil, do: raise("#{exec} not found")
     opts = Keyword.put(opts, :args, [path])
-    cmd(ls, opts)
+    cmd(exec, opts)
   end
 
   def ll(path, opts \\ []) do
-    ls = System.find_executable("ls")
+    exec = System.find_executable("ls")
+    if exec == nil, do: raise("#{exec} not found")
     opts = Keyword.put(opts, :args, ["-l", path])
-    cmd(ls, opts)
+    cmd(exec, opts)
   end
 
   def la(path, opts \\ []) do
-    ls = System.find_executable("ls")
+    exec = System.find_executable("ls")
+    if exec == nil, do: raise("#{exec} not found")
     opts = Keyword.put(opts, :args, ["-a", path])
-    cmd(ls, opts)
+    cmd(exec, opts)
   end
 
   def lla(path, opts \\ []) do
-    ls = System.find_executable("ls")
+    exec = System.find_executable("ls")
+    if exec == nil, do: raise("#{exec} not found")
     opts = Keyword.put(opts, :args, ["-la", path])
-    cmd(ls, opts)
+    cmd(exec, opts)
   end
 
   # quickly run the command and send all output to stdio stream
