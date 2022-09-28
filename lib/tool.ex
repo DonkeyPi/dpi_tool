@@ -1,4 +1,31 @@
 defmodule Tool do
+  # fixme: check file permissions
+  # fixme: run cmd with pty
+
+  def ls(path, opts \\ []) do
+    ls = System.find_executable("ls")
+    opts = Keyword.put(opts, :args, [path])
+    cmd(ls, opts)
+  end
+
+  def ll(path, opts \\ []) do
+    ls = System.find_executable("ls")
+    opts = Keyword.put(opts, :args, ["-l", path])
+    cmd(ls, opts)
+  end
+
+  def la(path, opts \\ []) do
+    ls = System.find_executable("ls")
+    opts = Keyword.put(opts, :args, ["-a", path])
+    cmd(ls, opts)
+  end
+
+  def lla(path, opts \\ []) do
+    ls = System.find_executable("ls")
+    opts = Keyword.put(opts, :args, ["-la", path])
+    cmd(ls, opts)
+  end
+
   # quickly run the command and send all output to stdio stream
   # useful and required to work with tools like evtests
   # requires full path, use System.find_executable
@@ -16,11 +43,11 @@ defmodule Tool do
     handle = fn handle ->
       receive do
         {^port, {:data, data}} ->
-          IO.binwrite(iodev, data)
+          :ok = IO.binwrite(iodev, data)
           handle.(handle)
 
         {^port, {:exit_status, status}} ->
-          IO.binwrite(iodev, "Exit status #{status}\n")
+          :ok = IO.binwrite(iodev, "Exit status #{status}\n")
 
         other ->
           raise "#{inspect(other)}"
