@@ -2,6 +2,9 @@ defmodule Tool do
   # fixme: check file permissions
   # fixme: run cmd with pty
 
+  # chmod not available on nerves
+  # fixme: add chmod to nerves
+  # fixme: executables under /tmp give :eaccess error
   def chmod(perms, path, opts \\ []) do
     chmod = System.find_executable("chmod")
     opts = Keyword.put(opts, :args, [perms, path])
