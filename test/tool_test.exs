@@ -56,7 +56,11 @@ defmodule ToolTest do
     File.touch!("/tmp/tool-test/f2")
     File.touch!("/tmp/tool-test/.f3")
     Tool.la("/tmp/tool-test", iodev: iodev)
-    assert StringIO.flush(iodev) == ".\n..\n.f3\nf1\nf2\nExit status 0\n"
+
+    case :os.type() do
+      {:unix, :linux} -> assert StringIO.flush(iodev) == ".\n..\nf1\nf2\n.f3\nExit status 0\n"
+      {:unix, :darwin} -> assert StringIO.flush(iodev) == ".\n..\n.f3\nf1\nf2\nExit status 0\n"
+    end
   end
 
   test "lla basic test" do
@@ -73,7 +77,12 @@ defmodule ToolTest do
     File.touch!("/tmp/tool-test/.f3")
     Tool.lla("/tmp/tool-test", iodev: iodev)
     buffer = StringIO.flush(iodev)
-    assert buffer =~ ~r/.+\s\.f3\n.+\sf1\n.+\sf2\nExit status 0\n/
+
+    case :os.type() do
+      {:unix, :linux} -> assert buffer =~ ~r/.+\sf1\n.+\sf2\n.+\s\.f3\nExit status 0\n/
+      {:unix, :darwin} -> assert buffer =~ ~r/.+\s\.f3\n.+\sf1\n.+\sf2\nExit status 0\n/
+    end
+
     assert buffer |> String.split("\n") |> length > 4
   end
 end

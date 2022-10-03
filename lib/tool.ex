@@ -49,15 +49,24 @@ defmodule Tool do
 
   # quickly run the command and send all output to stdio stream
   # useful and required to work with tools like evtests
-  # requires full path, use System.find_executable
   # https://www.erlang.org/doc/apps/stdlib/io_protocol.html
   def cmd(cmd, opts \\ [args: [], iodev: :stdio]) do
     args = Keyword.get(opts, :args, [])
     iodev = Keyword.get(opts, :iodev, :stdio)
 
+    # relative paths must be of the form
+    # ./exec, ../exec, or bin/exec
+    exec =
+      case String.contains?(cmd, "/") do
+        true -> cmd
+        false -> System.find_executable(cmd)
+      end
+
+    if exec == nil, do: raise("#{exec} not found")
+
     port =
       Port.open(
-        {:spawn_executable, cmd},
+        {:spawn_executable, exec},
         [:binary, :exit_status, :stderr_to_stdout, args: args]
       )
 
