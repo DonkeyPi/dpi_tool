@@ -62,7 +62,7 @@ defmodule Tool do
         false -> System.find_executable(cmd)
       end
 
-    if exec == nil, do: raise("#{exec} not found")
+    if exec == nil, do: raise("#{cmd} not found")
 
     port =
       Port.open(
