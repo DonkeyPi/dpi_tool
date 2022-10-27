@@ -12,6 +12,13 @@ defmodule Tool do
     cmd(exec, opts)
   end
 
+  def kill(pid, opts \\ []) do
+    exec = System.find_executable("kill")
+    if exec == nil, do: raise("#{exec} not found")
+    opts = Keyword.put(opts, :args, ["-9", "#{pid}"])
+    cmd(exec, opts)
+  end
+
   def killall(name, opts \\ []) do
     exec = System.find_executable("killall")
     if exec == nil, do: raise("#{exec} not found")
