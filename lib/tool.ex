@@ -47,6 +47,13 @@ defmodule Tool do
     cmd(exec, opts)
   end
 
+  def cat(path, opts \\ []) do
+    exec = System.find_executable("cat")
+    if exec == nil, do: raise("#{exec} not found")
+    opts = Keyword.put(opts, :args, [path])
+    cmd(exec, opts)
+  end
+
   # quickly run the command and send all output to stdio stream
   # useful and required to work with tools like evtests
   # https://www.erlang.org/doc/apps/stdlib/io_protocol.html
