@@ -1,4 +1,4 @@
-defmodule Tool do
+defmodule Ash.Tool do
   # fixme: check file permissions
   # fixme: run cmd with pty
 
