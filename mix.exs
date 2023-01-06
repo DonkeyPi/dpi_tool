@@ -1,9 +1,9 @@
-defmodule Ash.Tool.MixProject do
+defmodule Dpi.Tool.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :ash_tool,
+      app: :dpi_tool,
       version: "0.1.1",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,

@@ -1,4 +1,4 @@
-defmodule Ash.Tool do
+defmodule Dpi.Tool do
   # fixme: check file permissions
   # fixme: run cmd with pty
 
